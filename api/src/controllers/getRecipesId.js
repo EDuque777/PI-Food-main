@@ -8,11 +8,12 @@ const getRecipesId = async (req, res) => {
     try {
         
         const {idRecipe} = req.params;
-        const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`)
+        //const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
+        const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`);
         // console.log(data.results[0].id)
         const filteredRecipe = data.results.find(diet => diet.id === +idRecipe)
 
-        console.log(filteredRecipe)
+        //console.log(filteredRecipe)
 
         if(!filteredRecipe){
             throw Error(`No hay recetas con el id: ${idRecipe}`)
