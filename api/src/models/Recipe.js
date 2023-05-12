@@ -21,17 +21,17 @@ module.exports = (sequelize) => {
       allowNull: false
     },
 
-    resumen_plato: {
+    summary: {
       type: DataTypes.TEXT,
       allowNull: false
     },
 
-    health_score: {
+    healthScore: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
 
-    paso_a_paso: {
+    steps: {
       type: DataTypes.TEXT,
       allowNull: false
     }

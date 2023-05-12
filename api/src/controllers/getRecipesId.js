@@ -1,5 +1,6 @@
 require('dotenv').config();
 const axios = require("axios");
+const {Recipe, Diet}= require("../db");
 const {API_KEY, URL} = process.env;
 
 
@@ -8,32 +9,60 @@ const getRecipesId = async (req, res) => {
     try {
         
         const {idRecipe} = req.params;
-        //const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
-        const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`);
-        // console.log(data.results[0].id)
+
+        if(idRecipe.toString().includes("-")){
+            const searchDatabaseRecipe = await Recipe.findOne({
+                where: { id: idRecipe },
+                include: { model: Diet, attributes: ['name'] },
+            });
+
+            if(searchDatabaseRecipe){
+
+                const { id, name, image, summary, healthScore, stepByStep} = searchDatabaseRecipe;
+
+                const associatedDiet = {
+                    id: id,
+                    name: name,
+                    image: image,
+                    summary: summary,
+                    healthScore: healthScore,
+                    stepByStep: stepByStep,
+                    diets: searchDatabaseRecipe.Diets.map((diet) => diet.name)
+                }
+                return res.status(200).json(associatedDiet);
+            }
+        }
+
+
+
+        const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`);
+        //const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`);
+
         const filteredRecipe = data.results.find(diet => diet.id === +idRecipe)
 
-        //console.log(filteredRecipe)
-
         if(!filteredRecipe){
-            throw Error(`No hay recetas con el id: ${idRecipe}`)
+            return res.status(400).send(`No hay recetas con el id: ${idRecipe}`)
         }
+
+        const deleteTags = filteredRecipe.summary.replace(/<[^>]*>/g, '');
+
+        const stepByStep = data.results.find(step => step.id === +idRecipe).analyzedInstructions[0].steps.map(step => step.step);
 
         const associatedDiet = {
             id: filteredRecipe.id,
-            vegetarian: filteredRecipe.vegetarian,
-            vegan: filteredRecipe.vegan,
-            glutenFree: filteredRecipe.glutenFree,
-            dairyFree: filteredRecipe.dairyFree,
-            veryHealthy: filteredRecipe.veryHealthy,
+            name: filteredRecipe.title,
+            image: filteredRecipe.image,
+            summary: deleteTags,
+            healthScore: filteredRecipe.healthScore,
+            steps: stepByStep,
             diets: filteredRecipe.diets
         }
 
-        return res.status(200).json(associatedDiet)
+        return res.status(200).json(associatedDiet);
 
     } catch (error) {
         
-        res.status(404).send(error.message)
+        res.status(404).send(error.message);
 
     }
 

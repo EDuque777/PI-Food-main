@@ -5,14 +5,19 @@ const postRecipes = async (req, res) => {
 
     try {
 
-        const {name, image, resumen_plato, health_score, paso_a_paso, diet} = req.body;
+        const {name, image, summary, healthScore, steps, diets} = req.body;
         
 
-        if(!name || !image || !resumen_plato || !health_score || !paso_a_paso || !diet){
-            throw Error("Faltan datos por completar");
+        if(!name || !image || !summary || !healthScore || !steps || !diets){
+            return res.status(400).send("Faltan datos por completar");
         }
 
-        const createRecipe = await Recipe.create({name, image, resumen_plato, health_score, paso_a_paso})
+        const existingRecipe = await Recipe.findOne({ where: { name } });
+        if (existingRecipe) {
+            return res.status(400).send(`Ya existe una receta con el nombre: ${name}`);
+        }
+
+        const createRecipe = await Recipe.create({name, image, summary, healthScore, steps})
     
         // if (diet.length) {
         //     for (let i = 0; i < diet.length; i++) {
@@ -23,15 +28,26 @@ const postRecipes = async (req, res) => {
         //     }
         // }
 
-        const dietsArray = diet.split(", ");
+        const dietsArray = diets.split(", ");
 
         
         for (let i = 0; i < dietsArray.length; i++) {
           const dietInstance = await Diet.findOrCreate({ where: { name: dietsArray[i] } });
           await createRecipe.addDiet(dietInstance[0]);
         }
+        
+        const response = {
+             
+            id: createRecipe.id,
+            name: createRecipe.name,
+            image: createRecipe.image,
+            summary: createRecipe.summary,
+            healthScore: createRecipe.healthScore,
+            steps: createRecipe.steps,
+            diets: diets
+          };
 
-        return res.status(201).json(createRecipe)
+        return res.status(201).json(response)
 
     } catch (error) {
         

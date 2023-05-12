@@ -8,13 +8,14 @@ const {API_KEY, URL} = process.env;
 const getDiets = async (req, res) => {
     try {
 
-      let diets = await Diet.findAll();
+      let diets = await Diet.findAll({ attributes: ['name'] });
 
       if (diets.length === 0) {
 
         const { data } = await axios.get(
-          //`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`
-          `https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`
+          `${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`
+          // `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`
+          // `https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`
         );
 
         diets = [...new Set(data.results.map((result) => result.diets).flat())];
