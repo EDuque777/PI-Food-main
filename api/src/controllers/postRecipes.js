@@ -18,17 +18,8 @@ const postRecipes = async (req, res) => {
         }
 
         const createRecipe = await Recipe.create({name, image, summary, healthScore, steps})
-    
-        // if (diet.length) {
-        //     for (let i = 0; i < diet.length; i++) {
-        //         const dietInstance = await Diet.findOrCreate({
-        //             where: { name: diet },
-        //         });
-        //         await createRecipe.addDiet(dietInstance[0]);
-        //     }
-        // }
 
-        const dietsArray = diets.split(", ");
+        const dietsArray = diets;
 
         
         for (let i = 0; i < dietsArray.length; i++) {

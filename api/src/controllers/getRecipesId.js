@@ -18,7 +18,7 @@ const getRecipesId = async (req, res) => {
 
             if(searchDatabaseRecipe){
 
-                const { id, name, image, summary, healthScore, stepByStep} = searchDatabaseRecipe;
+                const { id, name, image, summary, healthScore, steps} = searchDatabaseRecipe;
 
                 const associatedDiet = {
                     id: id,
@@ -26,7 +26,7 @@ const getRecipesId = async (req, res) => {
                     image: image,
                     summary: summary,
                     healthScore: healthScore,
-                    stepByStep: stepByStep,
+                    steps: steps,
                     diets: searchDatabaseRecipe.Diets.map((diet) => diet.name)
                 }
                 return res.status(200).json(associatedDiet);
@@ -35,8 +35,9 @@ const getRecipesId = async (req, res) => {
 
 
 
-        const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`);
-        //const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`);
+        //const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`);
+        //const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true&number=100`);
+        const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=d25d273ecba24220a41a201eb4be11b6&addRecipeInformation=true&number=100`)
 
         const filteredRecipe = data.results.find(diet => diet.id === +idRecipe)
 
