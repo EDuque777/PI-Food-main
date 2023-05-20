@@ -6,7 +6,7 @@ import { allRecipes } from "../../redux/actions";
 export default function Cards() {
     const dispatch = useDispatch();
     const recipes = useSelector(state => state.recipesDiets)
-    useEffect(() => dispatch(allRecipes()), [])
+    useEffect(() => dispatch(allRecipes()), [dispatch])
    return (
       <div>
          {

@@ -1,4 +1,4 @@
-import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, CLEAN_DETAIL} from "./action-types"
+import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, FILTER, ORDER, CLEAN_DETAIL} from "./action-types"
 import axios from "axios";
 
 
@@ -59,6 +59,15 @@ export const diest = () => {
             payload: data
         })
     }
+}
+
+
+export const filterRecipes = (value) => {
+    return {type: FILTER, payload: value}
+}
+
+export const orderRecipes = (value) => {
+    return {type: ORDER, payload: value}
 }
 
 

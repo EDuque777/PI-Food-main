@@ -12,7 +12,7 @@ export default function Deatil(){
     useEffect(() => {
         dispatch(recipesId(id))
         return () => dispatch(cleanDetail())
-    }, [])
+    }, [id, dispatch])
     console.log(recipes)
 
     const diets = recipes.diets ? recipes.diets.join(", ") : ""
@@ -29,7 +29,6 @@ export default function Deatil(){
             <h2>HealthScore: {recipes.healthScore}</h2>
             <h2>Steps: {recipes.steps}</h2>
             <h2>Diets: {diets}</h2>
-            
         </div>
     )
 }
