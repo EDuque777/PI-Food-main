@@ -1,4 +1,4 @@
-import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, FILTER, ORDER, CLEAN_DETAIL} from "./action-types"
+import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, FILTER_API, ORDER, CLEAN_DETAIL} from "./action-types"
 import axios from "axios";
 
 
@@ -50,7 +50,7 @@ export const createRecipes = (create) => {
 }
 
 
-export const diest = () => {
+export const dietsAll = () => {
     const endpoint = `http://localhost:3001/diets`;
     return async (dispatch) => {
         const {data} = await axios.get(endpoint);
@@ -63,7 +63,7 @@ export const diest = () => {
 
 
 export const filterRecipes = (value) => {
-    return {type: FILTER, payload: value}
+    return {type: FILTER_API, payload: value}
 }
 
 export const orderRecipes = (value) => {

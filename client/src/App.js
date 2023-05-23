@@ -8,6 +8,7 @@ function App() {
 
   const location = useLocation();
 
+
   return (
     <div className="App">
     {
@@ -17,6 +18,7 @@ function App() {
         <Route path='/home' element={<Cards/>}/>
         <Route path='/home/search' element={""}/>
         <Route path='/home/filter' element={""}/>
+        <Route path='/home/order' element={""}/>
         <Route path='/deatil/:id' element={<Deatil/>}/>
       </Routes>
     </div>

@@ -26,14 +26,14 @@ import Filtered from "../Filtered/Filtered";
         navigate("/home/search")
     };
 
-    const handleGoBack = () => {
+    const handleHome = () => {
       navigate("/home");
     };
 
     return(
         <div>
             <SearchBar onSearch={handleSearch} />
-            <button onClick={handleGoBack}>Home</button>
+            <button onClick={handleHome}>Home</button>
             <Filtered/>
 
       { location.pathname === '/home/search' && recipes.map(({id, name, image, summary, healthScore, steps, diets}) => {

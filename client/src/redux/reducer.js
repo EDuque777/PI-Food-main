@@ -1,10 +1,12 @@
-import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, FILTER, ORDER, CLEAN_DETAIL} from "./action-types"
+import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, FILTER_API, ORDER, CLEAN_DETAIL} from "./action-types"
 
 const initialState = {
     recipesDiets: [],
     recipesDietsId: {},
     recipesDietsName: [],
-    recipesDietsFilter: []
+    recipesDietsFilter: [],
+    dietsRecipes: [],
+    createRecipesDiet: []
 }
 
 const reducer = (state = initialState, {type, payload}) => {
@@ -29,38 +31,46 @@ const reducer = (state = initialState, {type, payload}) => {
                 recipesDietsName: payload
             }
 
-        case FILTER:
-            const allRecipesFiltered = state.recipesDiets.filter(recipe =>
-                recipe.diets.includes(payload)
-              );
-              console.log(allRecipesFiltered);
+        case FILTER_API:
+            const allRecipesFiltered = state.recipesDiets.filter(recipe => recipe.diets.includes(payload));
               return {
                 ...state,
                 recipesDietsFilter:
-                  payload === "allRecipes"
-                    ? [...state.recipesDiets]
-                    : allRecipesFiltered
-              };
+                payload === "allRecipes"
+                ? [...state.recipesDiets]
+                : allRecipesFiltered
+            };
     
-              case ORDER:
-                const allRecipesCopy = [...state.recipesDiets];
-                console.log(allRecipesCopy);
-                let sortedRecipes;
+        case ORDER:
+            const allRecipesCopy = [...state.recipesDiets];
+            let sortedRecipes;
               
-                if (payload === "AH") {
-                  sortedRecipes = allRecipesCopy.sort((a, b) => a.healthScore - b.healthScore);
-                }else if (payload === "AN") {
-                  sortedRecipes = allRecipesCopy.sort((a, b) => a.name.localeCompare(b.name));
-                }else if (payload === "DN") {
-                    sortedRecipes = allRecipesCopy.sort((a, b) => b.name.localeCompare(a.name)); 
-                }else {
-                  sortedRecipes = allRecipesCopy.sort((a, b) => b.healthScore - a.healthScore);
-                }
+            if (payload === "AH") {
+                sortedRecipes = allRecipesCopy.sort((a, b) => a.healthScore - b.healthScore);
+            }else if (payload === "AN") {
+                sortedRecipes = allRecipesCopy.sort((a, b) => a.name.localeCompare(b.name));
+            }else if (payload === "DN") {
+                sortedRecipes = allRecipesCopy.sort((a, b) => b.name.localeCompare(a.name)); 
+            }else {
+                sortedRecipes = allRecipesCopy.sort((a, b) => b.healthScore - a.healthScore);
+            }
               
-                return {
-                  ...state,
-                  recipesDiets: sortedRecipes
-                };
+            return {
+                ...state,
+                recipesDiets: sortedRecipes
+            };
+
+        case DIETS:
+            return {
+                ...state,
+                dietsRecipes: payload
+            }
+
+        case CREATE_RECIPES:
+            return {
+                ...state,
+                createRecipesDiet: payload
+            }
 
         case CLEAN_DETAIL:
             return{

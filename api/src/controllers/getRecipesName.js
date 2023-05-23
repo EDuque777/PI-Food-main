@@ -14,15 +14,15 @@ const getRecipesName = async (req, res) => {
             return res.status(400).send(`Parametro incorrecto`)
         }
 
-        //const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
+        const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
         //const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`);
-        const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=d25d273ecba24220a41a201eb4be11b6&addRecipeInformation=true`)
-        //const {data} = await axios("https://api.spoonacular.com/recipes/complexSearch?apiKey=283f0758b75c433ea4730f4291b02762&addRecipeInformation=true") 
+        //const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=d25d273ecba24220a41a201eb4be11b6&addRecipeInformation=true`)
+        //const {data} = await axios("https://api.spoonacular.com/recipes/complexSearch?apiKey=c8fb3c57a8c247d7902bc6e2da834e24&addRecipeInformation=true") 
 
         const apiRecipes = data.results.filter(coincidence => coincidence.title.toLowerCase().includes(name.toLowerCase())).map(recipe => {
             const instructions = recipe.analyzedInstructions && recipe.analyzedInstructions[0] ? recipe.analyzedInstructions[0].steps.map(step => step.step) : [];
             const diets = recipe.diets || recipe.Diets.map(diet => diet.name);
-            return {
+            return {   
               id: recipe.id,
               name: recipe.title,
               image: recipe.image,
