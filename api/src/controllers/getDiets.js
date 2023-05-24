@@ -1,32 +1,37 @@
 require('dotenv').config();
 const axios = require("axios");
-const {Diet} = require("../db")
+const {Diet, Recipe} = require("../db")
 const {API_KEY, URL} = process.env;
 
 
 const getDiets = async (req, res) => {
     try {
-
+      let dietsApi = [];
+      let dietsDbAll = [];
       let diets = await Diet.findAll();
+      let dietsDb = await Recipe.findAll({
+        include: {
+          model: Diet,
+          attributes: ['id', 'name'],
+          through: { attributes: [] }
+        }
+      })
+      
+      dietsDbAll = dietsDb.flatMap(recipe => recipe.Diets.map(diet => ({ id: diet.id, name: diet.name, db:true })))
+      .filter((diet, index, self) => index === self.findIndex(d => d.id === diet.id && d.name === diet.name));
 
       if (diets.length === 0) {
 
-         const { data } = await axios.get(
-           `${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`
-            //`https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`
-       );
+         //const { data } = await axios.get(
+           //`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`
+           // `https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`
+       //);
         //const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=d25d273ecba24220a41a201eb4be11b6&addRecipeInformation=true`)
-        //const {data} = await axios("https://api.spoonacular.com/recipes/complexSearch?apiKey=c8fb3c57a8c247d7902bc6e2da834e24&addRecipeInformation=true") 
+        const {data} = await axios("https://api.spoonacular.com/recipes/complexSearch?apiKey=09da1d2d5f5f4f89af7a23bc3667bbe5&addRecipeInformation=true") 
 
-        // let idCounter = 0;
-        // dietsApi = [...new Set(data.results.flatMap((diet) => diet.diets))]
-        // .map((diet) => ({ id: idCounter++, diet, api: true }));
-
-        // diets = [...new Set(data.results
-        //   .map((result) => result.diets)
-        //   .flat()
-        //   .filter((diet) => diet.origin && diet.origin === 'post')
-        // )];
+        let idCounter = 0;
+        dietsApi = [...new Set(data.results.flatMap((diet) => diet.diets))]
+        .map((diet) => ({ id: idCounter++, diet, api: true }));
 
         diets = [...new Set(data.results.map((result) => result.diets).flat())];
         
@@ -37,8 +42,19 @@ const getDiets = async (req, res) => {
         );
         diets = await Diet.findAll();
       }
+      else{
+        const { data } = await axios.get(
+          //`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`
+          // `https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`
+          // "https://api.spoonacular.com/recipes/complexSearch?apiKey=d25d273ecba24220a41a201eb4be11b6&addRecipeInformation=true"
+          "https://api.spoonacular.com/recipes/complexSearch?apiKey=09da1d2d5f5f4f89af7a23bc3667bbe5&addRecipeInformation=true" 
+          );
+      let idCounter = 0;
+        dietsApi = [...new Set(data.results.flatMap((diet) => diet.diets))]
+        .map((diet) => ({ id: idCounter++, diet, api: true }));
 
-      const combinedDiets = [...diets];
+      }
+      const combinedDiets = [...dietsApi, ...dietsDbAll];
       return res.status(200).json(combinedDiets)
 
     } catch (error) {
@@ -49,7 +65,6 @@ const getDiets = async (req, res) => {
   };
 
 
+module.exports = {getDiets}
 
-module.exports = {
-    getDiets
-}
+

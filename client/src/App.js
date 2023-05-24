@@ -19,6 +19,7 @@ function App() {
         <Route path='/home/search' element={""}/>
         <Route path='/home/filter' element={""}/>
         <Route path='/home/order' element={""}/>
+        <Route path='/home/filterDb' element={""}/>
         <Route path='/deatil/:id' element={<Deatil/>}/>
       </Routes>
     </div>

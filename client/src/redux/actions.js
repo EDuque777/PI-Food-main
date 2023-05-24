@@ -1,4 +1,4 @@
-import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, FILTER_API, ORDER, CLEAN_DETAIL} from "./action-types"
+import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, FILTER_API, FILTER_DB, ORDER, CLEAN_DETAIL} from "./action-types"
 import axios from "axios";
 
 
@@ -64,6 +64,10 @@ export const dietsAll = () => {
 
 export const filterRecipes = (value) => {
     return {type: FILTER_API, payload: value}
+}
+
+export const filterRecipesDb = (value) => {
+    return {type: FILTER_DB, payload: value}
 }
 
 export const orderRecipes = (value) => {

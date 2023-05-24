@@ -1,10 +1,11 @@
-import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, FILTER_API, ORDER, CLEAN_DETAIL} from "./action-types"
+import {ALL_RECIPES, RECIPES_ID, RECIPES_NAME, CREATE_RECIPES, DIETS, FILTER_API, FILTER_DB, ORDER, CLEAN_DETAIL} from "./action-types"
 
 const initialState = {
     recipesDiets: [],
     recipesDietsId: {},
     recipesDietsName: [],
     recipesDietsFilter: [],
+    recipesDietsFilterDb: [],
     dietsRecipes: [],
     createRecipesDiet: []
 }
@@ -31,15 +32,41 @@ const reducer = (state = initialState, {type, payload}) => {
                 recipesDietsName: payload
             }
 
+        // case FILTER_API:
+        //     const allRecipesFiltered = state.recipesDiets.filter(recipe => recipe.diets.includes(payload));
+        //       return {
+        //         ...state,
+        //         recipesDietsFilter:
+        //         payload === "allRecipes"
+        //         ? [...state.recipesDiets]
+        //         : allRecipesFiltered
+        //     };
+
         case FILTER_API:
-            const allRecipesFiltered = state.recipesDiets.filter(recipe => recipe.diets.includes(payload));
-              return {
-                ...state,
-                recipesDietsFilter:
-                payload === "allRecipes"
-                ? [...state.recipesDiets]
-                : allRecipesFiltered
+            const allRecipesFiltered = state.recipesDiets.filter(recipe => {
+              if (payload === "allRecipes") {
+                return true; // Retorna todas las recetas cuando payload es "allRecipes"
+              } else {
+                return recipe.diets.includes(payload) && recipe.api === true; // Filtra las recetas que tienen payload en sus dietas y api=true
+              }
+            });
+            return {
+              ...state,
+              recipesDietsFilter: allRecipesFiltered
             };
+
+            case FILTER_DB:
+                const allRecipesFilteredDb = state.recipesDiets.filter(recipe => {
+                  if (payload === "allRecipes") {
+                    return true; // Retorna todas las recetas cuando payload es "allRecipes"
+                  } else {
+                    return recipe.diets.includes(payload) && recipe.db === true; // Filtra las recetas que tienen payload en sus dietas y api=true
+                  }
+                });
+                return {
+                  ...state,
+                  recipesDietsFilterDb: allRecipesFilteredDb
+            };  
     
         case ORDER:
             const allRecipesCopy = [...state.recipesDiets];
