@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { recipesId, cleanDetail } from "../../redux/actions";
 import { useParams } from "react-router-dom";
+import style from "./Deatil.module.css"
 
 export default function Deatil(){
 
@@ -13,22 +14,21 @@ export default function Deatil(){
         dispatch(recipesId(id))
         return () => dispatch(cleanDetail())
     }, [id, dispatch])
-    console.log(recipes)
 
     const diets = recipes.diets ? recipes.diets.join(", ") : ""
 
     if (!recipes.name) {
-        return <div>Loading...</div>; 
+        return <div className={style.loading}>Loading...</div>; 
       }
 
     return(
-        <div>
-            <h2>Name: {recipes.name}</h2>
-            <img src={recipes.image} alt='' />
-            <h2>Summary: {recipes.summary}</h2>
-            <h2>HealthScore: {recipes.healthScore}</h2>
-            <h2>Steps: {recipes.steps}</h2>
-            <h2>Diets: {diets}</h2>
+        <div className={style.container}>
+            <h2 className={style.name}>Name: {recipes.name}</h2>
+            <img src={recipes.image} alt='' className={style.image}/>
+            <h2 className={style.name}>Summary: {recipes.summary}</h2>
+            <h2 className={style.name}>HealthScore: {recipes.healthScore}</h2>
+            <h2 className={style.name}>Steps: {recipes.steps}</h2>
+            <h2 className={style.name}>Diets: {diets}</h2>
         </div>
     )
 }

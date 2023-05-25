@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { filterRecipes, orderRecipes, dietsAll, filterRecipesDb} from "../../redux/actions";
+import { filterRecipes, orderRecipes, dietsAll, filterRecipesDb, cleanDetail} from "../../redux/actions";
 import { useNavigate, useLocation } from "react-router-dom";
 import Card from "../Card/Card";
+import style from "./Filtered.module.css"
 
 
 const Filtered = () => {
@@ -21,43 +22,44 @@ const Filtered = () => {
         dispatch(filterRecipesDb())
         dispatch(orderRecipes());
         dispatch(dietsAll());
+        return () => dispatch(cleanDetail())
       }, [dispatch]);
 
     const handleFiltered = (event) => {
+        dispatch(cleanDetail());
         dispatch(filterRecipes(event.target.value))
         navigate("/home/filter")
-        console.log(event.target.value)
     };
 
     const handleFilteredDb = (event) => {
+        dispatch(cleanDetail());
         dispatch(filterRecipesDb(event.target.value))
         navigate("/home/filterDb")
-        console.log(event.target.value)
     };
 
     const handleOrder = (event) => {
+        dispatch(cleanDetail());
         dispatch(orderRecipes(event.target.value))
         navigate("/home/order")
-        console.log(event.target.value)
     }
 
     const dietsApi = filterDiets.filter(diet => diet.diet);
     const dietsDb = filterDiets.filter(diet => diet.name)
-    console.log(recipes)
 
     return(
 
         <>
-            <select onChange={handleOrder}>
+            <div className={style.container}>
+            <select onChange={handleOrder} className={style.search}>
             <option hidden>Order</option>
             <option disabled>Order</option>
-            <option value="AH">Ascendente(HealthScore)</option>
-            <option value="DH">Descendente(HealthScore)</option>
-            <option value="AN">Ascendente(Name)</option>
-            <option value="DN">Descendente(Name)</option>
+            <option value="AH">upward(HealthScore)</option>
+            <option value="DH">falling(HealthScore)</option>
+            <option value="AN">upward(Name)</option>
+            <option value="DN">falling(Name)</option>
             </select>
 
-            <select onChange={handleFiltered}>
+            <select onChange={handleFiltered} className={style.search}>
             <option hidden>Filter Diet API</option>
             <option disabled>Filter Diet API</option>
              {dietsApi.map(({diet, id}) => (
@@ -65,13 +67,14 @@ const Filtered = () => {
             ))}
             </select>
 
-            <select onChange={handleFilteredDb}>
+            <select onChange={handleFilteredDb} className={style.search}>
             <option hidden>Filter Diet BD</option>
             <option disabled>Filter Diet DB</option>
              {dietsDb.map(({name, id}) => (
               <option key={id} value={name}>{name}</option>
             ))}
             </select>
+            </div>
 
             { location.pathname === '/home/filter' && recipes.map(({id, name, image, summary, healthScore, steps, diets}) => {
                return (

@@ -22,13 +22,8 @@ const getDiets = async (req, res) => {
 
       if (diets.length === 0) {
 
-         //const { data } = await axios.get(
-           //`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`
-           // `https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`
-       //);
-        //const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=d25d273ecba24220a41a201eb4be11b6&addRecipeInformation=true`)
-        const {data} = await axios("https://api.spoonacular.com/recipes/complexSearch?apiKey=09da1d2d5f5f4f89af7a23bc3667bbe5&addRecipeInformation=true") 
-
+         const { data } = await axios.get(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
+    
         let idCounter = 0;
         dietsApi = [...new Set(data.results.flatMap((diet) => diet.diets))]
         .map((diet) => ({ id: idCounter++, diet, api: true }));
@@ -43,12 +38,7 @@ const getDiets = async (req, res) => {
         diets = await Diet.findAll();
       }
       else{
-        const { data } = await axios.get(
-          //`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`
-          // `https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`
-          // "https://api.spoonacular.com/recipes/complexSearch?apiKey=d25d273ecba24220a41a201eb4be11b6&addRecipeInformation=true"
-          "https://api.spoonacular.com/recipes/complexSearch?apiKey=09da1d2d5f5f4f89af7a23bc3667bbe5&addRecipeInformation=true" 
-          );
+        const { data } = await axios.get(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
       let idCounter = 0;
         dietsApi = [...new Set(data.results.flatMap((diet) => diet.diets))]
         .map((diet) => ({ id: idCounter++, diet, api: true }));

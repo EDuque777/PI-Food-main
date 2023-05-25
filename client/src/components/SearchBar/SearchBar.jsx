@@ -1,4 +1,5 @@
 import { useState } from "react";
+import style from "./SearchBar.module.css"
 
 export default function SearchBar({ onSearch }) {
   const [name, setName] = useState("");
@@ -6,7 +7,7 @@ export default function SearchBar({ onSearch }) {
 
   const handleChange = (event) => {
     setName(event.target.value);
-    setErrorMessage(""); // Limpiar el mensaje de error cuando se ingrese texto en el input
+    setErrorMessage("");
   };
 
   const handleSearch = () => {
@@ -20,9 +21,9 @@ export default function SearchBar({ onSearch }) {
 
   return (
     <div>
-      <input type="search" onChange={handleChange} value={name} />
-      <button onClick={handleSearch}>Buscar</button>
-      {errorMessage && <p>{errorMessage}</p>} {/* Mostrar el mensaje de error si existe */}
+      <input type="search" onChange={handleChange} value={name} className={style.input}/>
+      <button onClick={handleSearch} className={style.search}>Search</button>
+      {errorMessage && <p className={style.error}>{errorMessage}</p>}
     </div>
   );
 }

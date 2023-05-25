@@ -32,22 +32,12 @@ const reducer = (state = initialState, {type, payload}) => {
                 recipesDietsName: payload
             }
 
-        // case FILTER_API:
-        //     const allRecipesFiltered = state.recipesDiets.filter(recipe => recipe.diets.includes(payload));
-        //       return {
-        //         ...state,
-        //         recipesDietsFilter:
-        //         payload === "allRecipes"
-        //         ? [...state.recipesDiets]
-        //         : allRecipesFiltered
-        //     };
-
         case FILTER_API:
             const allRecipesFiltered = state.recipesDiets.filter(recipe => {
               if (payload === "allRecipes") {
-                return true; // Retorna todas las recetas cuando payload es "allRecipes"
+                return true; 
               } else {
-                return recipe.diets.includes(payload) && recipe.api === true; // Filtra las recetas que tienen payload en sus dietas y api=true
+                return recipe.diets.includes(payload) && recipe.api === true; 
               }
             });
             return {
@@ -58,9 +48,9 @@ const reducer = (state = initialState, {type, payload}) => {
             case FILTER_DB:
                 const allRecipesFilteredDb = state.recipesDiets.filter(recipe => {
                   if (payload === "allRecipes") {
-                    return true; // Retorna todas las recetas cuando payload es "allRecipes"
+                    return true; 
                   } else {
-                    return recipe.diets.includes(payload) && recipe.db === true; // Filtra las recetas que tienen payload en sus dietas y api=true
+                    return recipe.diets.includes(payload) && recipe.db === true; 
                   }
                 });
                 return {

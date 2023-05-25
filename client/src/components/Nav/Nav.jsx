@@ -5,6 +5,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 import Card from "../Card/Card";
 import Filtered from "../Filtered/Filtered";
+import style from "./Nav.module.css"
 
  const Nav = () => {
 
@@ -27,13 +28,27 @@ import Filtered from "../Filtered/Filtered";
     };
 
     const handleHome = () => {
-      navigate("/home");
+        dispatch(cleanDetail());
+        navigate("/home");
     };
+
+    const handleLogin = () => {
+        dispatch(cleanDetail());
+        navigate("/");
+    }
+    const handlecreateRecipe = () => {
+        dispatch(cleanDetail());
+        navigate("/home/createRecipe");
+    }
 
     return(
         <div>
-            <SearchBar onSearch={handleSearch} />
-            <button onClick={handleHome}>Home</button>
+            <SearchBar onSearch={handleSearch}/>
+            <div className={style.container}>
+            <button onClick={handleHome} className={style.button}>Home</button>
+            <button onClick={handleLogin} className={style.button}>Log aut</button>
+            <button onClick={handlecreateRecipe} className={style.button}>Create recipe</button>
+            </div>
             <Filtered/>
 
       { location.pathname === '/home/search' && recipes.map(({id, name, image, summary, healthScore, steps, diets}) => {

@@ -8,10 +8,7 @@ const getRecipes = async (req, res) => {
 
     try {
 
-        //const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
-        //const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=48f825ac985b4674927decbde47c5a2d&addRecipeInformation=true`);
-        //const {data} = await axios(`https://api.spoonacular.com/recipes/complexSearch?apiKey=d25d273ecba24220a41a201eb4be11b6&addRecipeInformation=true`)
-        const {data} = await axios("https://api.spoonacular.com/recipes/complexSearch?apiKey=09da1d2d5f5f4f89af7a23bc3667bbe5&addRecipeInformation=true") 
+        const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
 
         const apiRecipes = data.results.filter(recipeAll => recipeAll).map(recipe => {
             const instructions = recipe.analyzedInstructions && recipe.analyzedInstructions[0] ? recipe.analyzedInstructions[0].steps.map(step => step.step) : [];
@@ -40,7 +37,7 @@ const getRecipes = async (req, res) => {
               image: recipe.image,
               summary: recipe.summary,
               healthScore: recipe.healthScore,
-              steps: recipe.steps,//.split('\n'),
+              steps: recipe.steps,
               diets,
               db: true
             }
