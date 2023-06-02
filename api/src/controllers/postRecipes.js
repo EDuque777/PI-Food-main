@@ -16,6 +16,9 @@ const postRecipes = async (req, res) => {
         if (existingRecipe) {
             return res.status(400).send(`Ya existe una receta con el nombre: ${name}`);
         }
+        if(healthScore.length < 0 || healthScore > 100 ){
+            return res.status(400).send(`El HealthScore tiene que estar en el rango de 0 a 100`);
+        }
 
         const createRecipe = await Recipe.create({name, image, summary, healthScore, steps})
 
