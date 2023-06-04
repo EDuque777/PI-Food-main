@@ -54,7 +54,4 @@ const getDiets = async (req, res) => {
     }
   };
 
-
 module.exports = {getDiets}
-
-
