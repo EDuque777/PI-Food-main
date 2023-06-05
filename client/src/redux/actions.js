@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 export const allRecipes = () => {
-    const endpoint = 'http://localhost:3001/recipes';
+    const endpoint = '/recipes';
     return async (dispatch) => {
         const {data} = await axios.get(endpoint);
         return dispatch({
@@ -15,7 +15,7 @@ export const allRecipes = () => {
 
 
 export const recipesId = (id) => {
-    const endpoint = `http://localhost:3001/recipes/${id}`;
+    const endpoint = `/recipes/${id}`;
     return async (dispatch) => {
         const {data} = await axios.get(endpoint);
         return dispatch({
@@ -27,7 +27,7 @@ export const recipesId = (id) => {
 
 
 export const recipesName = (name) => {
-    const endpoint = `http://localhost:3001/recipesName?name=${name}`;
+    const endpoint = `/recipesName?name=${name}`;
     return async (dispatch) => {
         const {data} = await axios.get(endpoint);
         return dispatch({
@@ -39,7 +39,7 @@ export const recipesName = (name) => {
 
 
 export const createRecipes = (create) => {
-    const endpoint = 'http://localhost:3001/recipes';
+    const endpoint = '/recipes';
     return async (dispatch) => {
         const {data} = await axios.post(endpoint, create);
         return dispatch({
@@ -51,7 +51,7 @@ export const createRecipes = (create) => {
 
 
 export const dietsAll = () => {
-    const endpoint = `http://localhost:3001/diets`;
+    const endpoint = `/diets`;
     return async (dispatch) => {
         const {data} = await axios.get(endpoint);
         return dispatch({
